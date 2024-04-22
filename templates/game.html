@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Card Game</title>
+</head>
+<body>
+    <h1>Welcome, {{ session['name'] }}</h1>
+    <button onclick="drawCard()">Draw Card</button>
+    <button onclick="shuffleDeck()">Reshuffle</button>
+    <div id="output"></div>
+    <h3>My Cards:</h3>
+    <div id="cardList"></div>
+
+    <script>
+        async function fetchAPI(url) {
+            const response = await fetch(url);
+            const data = await response.json();
+            if (!response.ok) {
+                return alert(data.error);
+            }
+            updateCardList();
+            return data;
+        }
+
+        function drawCard() {
+            fetchAPI('/draw').then(data => {
+                document.getElementById('output').textContent = `Drawn Card: ${data.card}, Remaining: ${data.remaining}`;
+            });
+        }
+
+        function shuffleDeck() {
+            fetchAPI('/shuffle').then(data => {
+                alert(data.message);
+            });
+        }
+
+        function updateCardList() {
+            fetch('/show').then(response => response.json())
+                .then(data => {
+                    document.getElementById('cardList').textContent = `${data.cards.join(', ')}`;
+                });
+        }
+
+        // Initial call to update card list on page load
+        updateCardList();
+    </script>
+</body>
+</html>
