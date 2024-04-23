@@ -18,8 +18,6 @@ def card_filename(card_number):
         return None
     suit = suits[(card_number - 1) // 13]
     value = values[(card_number - 1) % 13]
-    if value in ['jack', 'queen', 'king']:
-        value += '2'  # Adding '2' for face cards as per your naming convention
     filename = f"AllCardImages/{value}_of_{suit}.svg"  # Include the subfolder in the path
     return filename
 
