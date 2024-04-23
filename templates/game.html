@@ -62,14 +62,14 @@
 
         function updateCardDisplay() {
             const cardImageElement = document.getElementById('cardCarouselImage');
-            if(myCards.length > 0) {
+            if (myCards.length > 0 && myCards[currentCardIndex]) {
                 cardImageElement.src = myCards[currentCardIndex]; // Update the src of the image element
-                cardImageElement.alt = `Card number ${currentCardIndex + 1}`;
+                cardImageElement.style.display = ''; // Make sure the image is displayed
             } else {
-                cardImageElement.src = ''; // No src if there are no cards
-                cardImageElement.alt = 'No cards drawn';
+                cardImageElement.style.display = 'none'; // Hide the image element if there are no cards
             }
         }
+
 
         // Initial call to update card display on page load
         updateCardDisplay();
