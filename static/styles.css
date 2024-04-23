@@ -1,59 +1,52 @@
-/* Base styles for all devices */
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    padding: 20px;
     background-color: #f4f4f9;
+    text-align: center; /* Center align text for a better mobile view */
 }
 
-form, .content {
-    width: 90%;
+.content {
     max-width: 400px;
-    margin: 20px;
+    margin: 20px auto; /* Center the content */
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
     background: white;
     border-radius: 8px;
-}
-
-input[type="text"], button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 button {
-    background-color: #5cb85c;
-    color: white;
-    border: none;
+    width: auto; /* Do not stretch the buttons to full width */
+    padding: 10px 20px; /* Add more padding horizontally */
+    margin: 10px;
+    font-size: 16px; /* Adjust font size */
 }
 
-button:hover {
-    background-color: #4cae4c;
+/* Style for the welcome message */
+.welcome {
+    font-size: 20px; /* Adjust welcome message font size */
+    margin-bottom: 20px; /* Add margin below the welcome message */
 }
 
+/* Style for card list */
 #cardList {
     background: #e2e2e2;
     padding: 10px;
     border-radius: 5px;
-    margin-top: 10px;
+    margin: 10px 0;
 }
 
-/* Media Queries for Responsive Adjustments */
 @media (max-width: 600px) {
     body {
-        font-size: 14px;
+        padding: 10px; /* Less padding on smaller screens */
     }
-
-    .content, form {
-        width: 100%;
-        margin: 10px;
-        padding: 10px;
+    .content {
+        padding: 10px; /* Less padding for the content div */
+    }
+    .welcome {
+        font-size: 18px; /* Slightly smaller font size on smaller screens */
+    }
+    button {
+        font-size: 14px; /* Smaller buttons */
     }
 }
