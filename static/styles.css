@@ -36,6 +36,15 @@ button {
     margin: 10px 0;
 }
 
+#cardImage {
+    max-width: 90%;
+    height: auto;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+
 @media (max-width: 600px) {
     body {
         padding: 10px; /* Less padding on smaller screens */

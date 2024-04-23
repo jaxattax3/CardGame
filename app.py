@@ -11,6 +11,18 @@ deck_lock = threading.Lock()
 deck = list(range(1, 53))
 shuffle(deck)
 
+def card_filename(card_number):
+    suits = ['clubs', 'diamonds', 'hearts', 'spades']
+    values = ['ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'jack', 'queen', 'king']
+    if card_number < 1 or card_number > 52:
+        return None
+    suit = suits[(card_number - 1) // 13]
+    value = values[(card_number - 1) % 13]
+    if value in ['jack', 'queen', 'king']:
+        value += '2'  # Adding '2' for face cards as per your naming convention
+    filename = f"AllCardImages/{value}_of_{suit}.svg"  # Include the subfolder in the path
+    return filename
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -30,14 +42,16 @@ def game():
 def draw_card():
     with deck_lock:
         if deck:
-            card = deck.pop()
+            card_number = deck.pop()
+            card_img_url = url_for('static', filename=card_filename(card_number))
             if 'cards' not in session:
                 session['cards'] = []  # Ensure session card list is initialized
-            session['cards'].append(card)
+            session['cards'].append(card_number)
             session.modified = True
-            return jsonify({'card': card, 'remaining': len(deck)})
+            return jsonify({'card': card_number, 'remaining': len(deck), 'card_img_url': card_img_url})
         else:
             return jsonify({'error': 'No cards left'}), 400
+
 
 @app.route('/shuffle')
 def shuffle_deck():
