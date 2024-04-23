@@ -21,9 +21,17 @@
     </div>
 
     <script>
-        // ... Your existing script code ...
+        // Define the fetchAPI function to handle fetch requests and json conversion.
+        async function fetchAPI(url) {
+            const response = await fetch(url);
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.error || 'Unknown error occurred');
+            }
+            return data;
+        }
 
-        // Add global variable to track the current index
+        // Global variables to track the current index and cards.
         let currentCardIndex = 0;
         let myCards = [];
 
@@ -40,13 +48,14 @@
             });
         }
 
-
         function shuffleDeck() {
             fetchAPI('/shuffle').then(data => {
                 alert(data.message);
                 myCards = []; // Clear the cards array
                 currentCardIndex = 0; // Reset the index
                 updateCardDisplay(); // Update the card display
+            }).catch(error => {
+                console.error('Error shuffling deck:', error);
             });
         }
 
@@ -74,10 +83,8 @@
             }
         }
 
-
         // Initial call to update card display on page load
         updateCardDisplay();
-
     </script>
 </body>
 </html>
