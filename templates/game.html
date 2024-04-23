@@ -29,13 +29,17 @@
 
         function drawCard() {
             fetchAPI('/draw').then(data => {
+                console.log(data);  // Log data to see if the response is correct
                 if (data.card_img_url) {
                     myCards.push(data.card_img_url); // Add the new card URL to the array
                     currentCardIndex = myCards.length - 1; // Set the index to the new card
                     updateCardDisplay(); // Update the card display
                 }
+            }).catch(error => {
+                console.error('Error drawing card:', error);
             });
         }
+
 
         function shuffleDeck() {
             fetchAPI('/shuffle').then(data => {
