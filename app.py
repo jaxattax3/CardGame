@@ -1,3 +1,5 @@
+import os
+from gevent.pywsgi import WSGIServer
 from flask import Flask, render_template, request, redirect, session, jsonify
 from random import shuffle
 import threading
@@ -51,6 +53,7 @@ def show_cards():
     return jsonify({'cards': session.get('cards', [])})
 
 if __name__ == '__main__':
-    from gevent.pywsgi import WSGIServer
-    http_server = WSGIServer(('0.0.0.0', 5000), app)
+    # Corrected to use environment variable for port
+    port = int(os.getenv('PORT', 5000))  # Default to 5000 if no PORT variable is set
+    http_server = WSGIServer(('0.0.0.0', port), app)
     http_server.serve_forever()
