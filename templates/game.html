@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="/static/styles.css">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ensure responsiveness on mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Card Game</title>
 </head>
 <body>
@@ -11,54 +11,69 @@
         <h1>Welcome, {{ session['name'] }}</h1>
         <button onclick="drawCard()">Draw Card</button>
         <button onclick="shuffleDeck()">Reshuffle</button>
-        <div id="output"></div>
+        
         <h3>My Cards:</h3>
-        <div id="cardList"></div>
-        <!-- Image container for the drawn card -->
-        <div id="cardImageContainer">
-            <img id="cardImage" src="" alt="Drawn card will appear here" style="max-width:100%; height:auto;">
+        <div id="myCardsCarousel">
+            <button onclick="previousCard()">&#10094;</button> <!-- Left arrow for previous card -->
+            <img id="cardCarouselImage" src="" alt="Card image" class="card-image"> <!-- Image container for the cards -->
+            <button onclick="nextCard()">&#10095;</button> <!-- Right arrow for next card -->
         </div>
     </div>
 
     <script>
-        async function fetchAPI(url) {
-            const response = await fetch(url);
-            const data = await response.json();
-            if (!response.ok) {
-                return alert(data.error);
-            }
-            return data;
-        }
+        // ... Your existing script code ...
+
+        // Add global variable to track the current index
+        let currentCardIndex = 0;
+        let myCards = [];
 
         function drawCard() {
             fetchAPI('/draw').then(data => {
-                document.getElementById('output').textContent = `Drawn Card: ${data.card}, Remaining: ${data.remaining}`;
-                // Update the image source with the URL provided by the server
-                document.getElementById('cardImage').src = data.card_img_url || '';
-                updateCardList();
+                if (data.card_img_url) {
+                    myCards.push(data.card_img_url); // Add the new card URL to the array
+                    currentCardIndex = myCards.length - 1; // Set the index to the new card
+                    updateCardDisplay(); // Update the card display
+                }
             });
         }
 
         function shuffleDeck() {
             fetchAPI('/shuffle').then(data => {
                 alert(data.message);
-                updateCardList(); // Update card list after reshuffling
+                myCards = []; // Clear the cards array
+                currentCardIndex = 0; // Reset the index
+                updateCardDisplay(); // Update the card display
             });
         }
 
-        function updateCardList() {
-            fetch('/show').then(response => response.json())
-                .then(data => {
-                    let cardListHTML = '';
-                    data.cards.forEach(card => {
-                        cardListHTML += `<img src="/static/AllCardImages/${card}.png" alt="Card Image" class="card-image">`; // Update to match your file naming if needed
-                    });
-                    document.getElementById('cardList').innerHTML = cardListHTML;
-                });
+        function previousCard() {
+            if(currentCardIndex > 0) {
+                currentCardIndex--; // Decrement the index to show the previous card
+                updateCardDisplay(); // Update the card display
+            }
         }
 
-        // Initial call to update card list on page load
-        updateCardList();
+        function nextCard() {
+            if(currentCardIndex < myCards.length - 1) {
+                currentCardIndex++; // Increment the index to show the next card
+                updateCardDisplay(); // Update the card display
+            }
+        }
+
+        function updateCardDisplay() {
+            const cardImageElement = document.getElementById('cardCarouselImage');
+            if(myCards.length > 0) {
+                cardImageElement.src = myCards[currentCardIndex]; // Update the src of the image element
+                cardImageElement.alt = `Card number ${currentCardIndex + 1}`;
+            } else {
+                cardImageElement.src = ''; // No src if there are no cards
+                cardImageElement.alt = 'No cards drawn';
+            }
+        }
+
+        // Initial call to update card display on page load
+        updateCardDisplay();
+
     </script>
 </body>
 </html>

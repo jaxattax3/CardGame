@@ -44,6 +44,30 @@ button {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
+#myCardsCarousel {
+    text-align: center;
+}
+
+#myCardsCarousel button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 24px;
+    padding: 10px;
+}
+
+#cardCarouselImage {
+    max-width: 90px;
+    height: auto;
+    margin: 0 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    vertical-align: middle; /* Align the image vertically with the arrows */
+}
+
+/* Add additional responsive and aesthetic styles as needed */
+
+
 
 @media (max-width: 600px) {
     body {
